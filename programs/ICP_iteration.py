@@ -26,9 +26,10 @@ def pre_calculate_dks(A_markers, A_tip, B_markers, B_tip, frames, Nsamps, N_A, N
         
         R_B_inv, t_B_inv = apply_inverse_transform(R_B, t_B)
         
-        # Transform A_tip from Body A to Tracker frame
+        # transform A_tip from body A to tracker frame
         A_tip_transformed = apply_transform(R_A, t_A, A_tip.reshape(1, -1))[0]
-        # Transform result from Tracker frame to Body B frame (d_k)
+
+        # transform result from tracker frame to body B frame (d_k)
         d_k = apply_transform(R_B_inv, t_B_inv, A_tip_transformed.reshape(1, -1))[0]
         
         d_k_points.append(d_k)
@@ -63,7 +64,7 @@ def solve_pa4(bodyA_file, bodyB_file, mesh_file, sample_readings_file,
         frames, Nsamps, N_A, N_B
     )
 
-    # Initialize F_reg = identity
+    # initialize F_reg = identity
     R_reg = np.eye(3)
     t_reg = np.zeros(3)
 
@@ -71,7 +72,7 @@ def solve_pa4(bodyA_file, bodyB_file, mesh_file, sample_readings_file,
 
     print("Starting ICP iterations...")
 
-    # These will store the last iteration s_k and c_k
+    # these will store the last iteration s_k and c_k
     last_s_k_points = None
     last_c_k_points = None
 
@@ -86,7 +87,7 @@ def solve_pa4(bodyA_file, bodyB_file, mesh_file, sample_readings_file,
             # s_k = F_reg(d_k)
             s_k = apply_transform(R_reg, t_reg, d_k.reshape(1, -1))[0]
 
-            # Find closest mesh point
+            # find closest mesh point
             c_k, dist, _ = closest_point_on_mesh(s_k, vertices, triangles)
 
             s_k_points.append(s_k)
@@ -105,12 +106,12 @@ def solve_pa4(bodyA_file, bodyB_file, mesh_file, sample_readings_file,
         mean_dist = np.mean(distances)
         print(f"Iteration {iteration+1}: mean distance = {mean_dist:.6f}")
 
-        # Check convergence
+        # check convergence
         if abs(prev_mean_dist - mean_dist) < tolerance:
             print(f"Converged at iteration {iteration+1}")
             break
 
-        # Update transform
+        # update transform
         R_reg = R_new
         t_reg = t_new
         prev_mean_dist = mean_dist

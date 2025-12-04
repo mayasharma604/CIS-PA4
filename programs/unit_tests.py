@@ -2,6 +2,7 @@
 import numpy as np
 from utility_functions import *
 from ICP_algo import *
+from ICP_iteration import *
 
 
 # TRIANGEL TESTS
@@ -41,7 +42,6 @@ def test_closest_point_outside_triangle():
     result = closest_point_on_triangle(point, tri)
     # should project to the midpoint of hypotenuse
     assert np.allclose(result, [0.5, 0.5, 0])
-
 
 # this test is to see if thethe point is above the triangle
 # the return projects the vertically onto plane
@@ -95,10 +95,35 @@ def test_closest_point_on_mesh_equal_dist():
     point = np.array([0.5, 0.5, 1.0])
     closest, distance, idx = closest_point_on_mesh(point, vertices, triangles)
 
-#since the point is the same distance from btho triangles we can have either triangel as output
+#since the point is the same distance from boht triangles we can have either triangel as output
     assert np.allclose(closest, [0.5, 0.5, 0])
     assert np.isclose(distance, 1.0)
     assert idx in [0, 1]
-    
-    
-    
+
+
+#test the whole pipeline with synthetic data
+def test_solve_pa4_direct_call():
+    bodyA_file = "sample/Sample-BodyA.txt"
+    bodyB_file = "sample/Sample-BodyB.txt"
+    mesh_file  = "sample/SampleMeshFile.sur"
+    sample_file = "sample/PA4-SampleReadings.txt"
+    output_file = "sample/Sample_Output.txt"
+
+    # call the function with sample files
+    final_s, final_c = solve_pa4(
+        bodyA_file,
+        bodyB_file,
+        mesh_file,
+        sample_file,
+        output_file,
+        max_iterations=20,
+        tolerance=1e-4
+    )
+
+    # check that both tip coordinates have 3 outputs and that the distances are finite
+    assert os.path.exists(output_file), "Output file was not created"
+    assert final_s.shape == final_c.shape
+    assert final_s.shape[1] == 3
+    dists = np.linalg.norm(final_s - final_c, axis=1)
+    assert np.all(np.isfinite(dists))
+    assert dists.mean() < 200

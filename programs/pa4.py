@@ -1,6 +1,6 @@
 import sys
 import os
-from ICP_algo import solve_pa4
+from ICP_iteration import solve_pa4
 
 def main():
    

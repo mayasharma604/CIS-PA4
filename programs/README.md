@@ -31,12 +31,17 @@ Computer Integrated Surgery Programming Assignment 4
 
 ## Execution Instructions
 To run the program and generate output in the specified PA#4 format:
+in the CIS-PA4 directory:
 ```bash
-python pa4.py -debug A
+python programs/pa4.py input_pa4/Problem4-BodyA.txt input_pa4/Problem4-BodyB.txt input_pa4/Problem4MeshFile.sur input_pa4/PA4-K-Unknown-SampleReadingsTest.txt output/Output-K.txt
 ```
-Replace `-debug A` with `-debug B`, `-unknown G`, etc., as needed for different datasets.
+** NOTES **
+- input_pa4 is the folder with all the Body, Mesh, and Sample Reading files
+- output is the folder where all output files write to
+- To run for another data set: change the 'K' in input_pa4/PA4-K-Unknown-SampleReadingsTest.txt and Output-K.txt with the corresponding file
+   - ie. input_pa4/PA4-A-Unknown-SampleReadingsTest.txt output/Output-A.txt
 
-The output file `pa4-X-Output.txt` will be created containing:
+The output file `Output-X.txt` will be created containing:
 - Header: `N_samps pa4-X-Output.txt`
 - For each sample: `s_x s_y s_z    c_x c_y c_z    |s_k - c_k|`
 
@@ -58,7 +63,7 @@ The output file `pa4-X-Output.txt` will be created containing:
 
 ## Notes
 - The program implements the full iterative ICP algorithm as specified in PA#4
-- Convergence tolerance defaults to 1e-5 with maximum 20 iterations
+- Convergence tolerance defaults to 1e-5 with maximum 50 iterations
 - Debug outputs include iteration progress and final mean residual error
 - All mathematical derivations and algorithmic references follow the below sources
 
