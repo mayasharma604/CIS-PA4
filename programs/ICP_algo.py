@@ -1,7 +1,6 @@
 import numpy as np
 from utility_functions import *
 
-# --- ICP Matching Functions (from your PA#3) ---
 
 '''
 Created on November 6, 2025
@@ -94,5 +93,4 @@ def closest_point_on_mesh(point, vertices, triangles):
     
     return close_pt, min_distance, closest_triangle_idx
 
-# --- PA#4 Specific Functions ---
 

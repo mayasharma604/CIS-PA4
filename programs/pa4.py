@@ -3,12 +3,11 @@ import os
 from ICP_algo import solve_pa4
 
 def main():
-    # Expected command line arguments:
-    # python pa4.py <bodyA_file> <bodyB_file> <mesh_file> <samples_file> <output_file>
-    
+   
+
     if len(sys.argv) != 6:
-        print("Usage: python pa4.py <bodyA_file> <bodyB_file> <mesh_file> <samples_file> <output_file>")
-        print("\nNote: Please provide 5 file paths as command line arguments.")
+        print("please use the terminal command python pa4.py bodyA_file bodyB_file mesh_file samples_file output_file")
+        print("please give 5 file paths as command line args")
         sys.exit(1)
     
     bodyA_file = sys.argv[1]
@@ -26,22 +25,22 @@ def main():
     print("-" * 30)
 
     try:
-        # Call the solver function imported from icp_pa4.py
+
         solve_pa4(bodyA_file, bodyB_file, mesh_file, samples_file, output_file)
     except FileNotFoundError as e:
-        print(f"ERROR: One or more required files not found: {e}")
-        print("Please ensure your data files are correctly named and in the same directory.")
+        print(f"one or more of the required files for this program to run wasn't found: {e}")
+        print(" make sure your your data files are correctly named and in the same directory as this main!.")
     except Exception as e:
-        print(f"An unexpected error occurred during execution: {e}")
+        print(f"an unexpected error occurred during execution: {e}")
 
 
 if __name__ == '__main__':
-    # Add a check for the utility_functions module existence
+
     try:
         from utility_functions import read_mesh
     except ImportError:
-        print("ERROR: utility_functions.py not found.")
-        print("Please ensure your utility_functions.py is in the same directory.")
+        print("utility_functions file wasn't found.")
+        print(" make sure you utility functions python file is in the same directory!.")
         sys.exit(1)
         
     main()
